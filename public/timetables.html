@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetables - Holy Angels Substitution</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <span>📚</span>
+                <span>Holy Angels Substitution</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="teachers.html">Teachers</a></li>
+                <li><a href="timetables.html" class="active">Timetables</a></li>
+                <li><a href="attendance.html">Attendance</a></li>
+                <li><a href="substitutions.html">Substitutions</a></li>
+                <li><a href="notifications.html">Notifications</a></li>
+            </ul>
+            <div class="user-info">
+                <span class="user-role" id="userRole"></span>
+                <span id="userName"></span>
+                <button class="btn-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h2>Timetable Management</h2>
+                <p>Manage teacher timetables and class schedules</p>
+            </div>
+
+            <div class="card mb-20">
+                <div class="card-header">
+                    <h3 class="card-title">All Timetables</h3>
+                    <button class="btn btn-primary" onclick="openAddTimetableModal()" id="addTimetableBtn">+ Add Entry</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Teacher</th>
+                                <th>Day</th>
+                                <th>Period</th>
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="timetablesTable">
+                            <tr>
+                                <td colspan="6" class="text-center loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Timetable Modal -->
+    <div id="timetableModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add Timetable Entry</h3>
+                <button class="modal-close" onclick="closeTimetableModal()">&times;</button>
+            </div>
+            <form id="timetableForm" onsubmit="saveTimetable(event)">
+                <input type="hidden" id="timetableId">
+                <div class="form-group">
+                    <label for="timetableTeacher">Teacher *</label>
+                    <select id="timetableTeacher" required></select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="timetableDay">Day *</label>
+                        <select id="timetableDay" required>
+                            <option value="">Select day</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="timetablePeriod">Period *</label>
+                        <input type="number" id="timetablePeriod" min="1" max="8" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="timetableClass">Class *</label>
+                    <input type="text" id="timetableClass" required placeholder="e.g., Class 10A">
+                </div>
+                <div class="form-group">
+                    <label for="timetableSubject">Subject *</label>
+                    <input type="text" id="timetableSubject" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeTimetableModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/timetables.js"></script>
+</body>
+</html>

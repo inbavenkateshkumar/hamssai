@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Holy Angels Substitution</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .notification-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .notification-item:hover {
+            background-color: var(--bg-hover);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .notification-item.unread {
+            background-color: #e3f2fd;
+            border-left-color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .notification-item.read {
+            opacity: 0.7;
+            border-left-color: var(--success-color);
+        }
+        
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .notification-type {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .notification-message {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin: 8px 0;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .notification-actions button {
+            padding: 5px 12px;
+            font-size: 12px;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-buttons button {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .filter-buttons button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <span>📚</span>
+                <span>Holy Angels Substitution</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="teachers.html">Teachers</a></li>
+                <li><a href="timetables.html">Timetables</a></li>
+                <li><a href="attendance.html">Attendance</a></li>
+                <li><a href="substitutions.html">Substitutions</a></li>
+                <li><a href="notifications.html" class="active">Notifications</a></li>
+            </ul>
+            <div class="user-info">
+                <span class="user-role" id="userRole"></span>
+                <span id="userName"></span>
+                <button class="btn-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h2>Notifications</h2>
+                <p>Substitution assignments and important messages</p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="card mb-20">
+                <div class="filter-buttons">
+                    <button class="active" onclick="filterNotifications('all')">All</button>
+                    <button onclick="filterNotifications('unread')">Unread</button>
+                    <button onclick="filterNotifications('read')">Read</button>
+                    <button onclick="clearAllNotifications()" style="margin-left: auto; background-color: #f5f5f5;">Clear Read</button>
+                </div>
+            </div>
+
+            <!-- Notifications List -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Your Notifications</h3>
+                    <span class="badge badge-primary" id="unreadCount">0</span>
+                </div>
+                <div id="notificationsList" style="max-height: 600px; overflow-y: auto;">
+                    <div class="text-center" style="padding: 40px;">
+                        <p>Loading notifications...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/notifications.js"></script>
+</body>
+</html>

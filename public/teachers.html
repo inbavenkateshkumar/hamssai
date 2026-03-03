@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachers - Holy Angels Substitution</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <span>📚</span>
+                <span>Holy Angels Substitution</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="teachers.html" class="active">Teachers</a></li>
+                <li><a href="timetables.html">Timetables</a></li>
+                <li><a href="attendance.html">Attendance</a></li>
+                <li><a href="substitutions.html">Substitutions</a></li>
+                <li><a href="notifications.html">Notifications</a></li>
+            </ul>
+            <div class="user-info">
+                <span class="user-role" id="userRole"></span>
+                <span id="userName"></span>
+                <button class="btn-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h2>Teacher Management</h2>
+                <p>Manage teacher information and substitution limits</p>
+            </div>
+
+            <div class="card mb-20">
+                <div class="card-header">
+                    <h3 class="card-title">All Teachers</h3>
+                    <button class="btn btn-primary" onclick="openAddTeacherModal()" id="addTeacherBtn">+ Add Teacher</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Subject</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Max Sub Limit</th>
+                                <th>Current Count</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teachersTable">
+                            <tr>
+                                <td colspan="8" class="text-center loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Teacher Modal -->
+    <div id="teacherModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add Teacher</h3>
+                <button class="modal-close" onclick="closeTeacherModal()">&times;</button>
+            </div>
+            <form id="teacherForm" onsubmit="saveTeacher(event)">
+                <input type="hidden" id="teacherId">
+                <div class="form-group">
+                    <label for="teacherName">Name *</label>
+                    <input type="text" id="teacherName" required>
+                </div>
+                <div class="form-group">
+                    <label for="teacherSubject">Subject *</label>
+                    <input type="text" id="teacherSubject" required>
+                </div>
+                <div class="form-group">
+                    <label for="teacherPhone">Phone</label>
+                    <input type="text" id="teacherPhone">
+                </div>
+                <div class="form-group">
+                    <label for="teacherEmail">Email</label>
+                    <input type="email" id="teacherEmail">
+                </div>
+                <div class="form-group">
+                    <label for="teacherMaxLimit">Max Substitution Limit</label>
+                    <input type="number" id="teacherMaxLimit" min="1" value="3">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeTeacherModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/teachers.js"></script>
+</body>
+</html>

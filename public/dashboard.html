@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Holy Angels Substitution</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <span>📚</span>
+                <span>Holy Angels Substitution</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="teachers.html">Teachers</a></li>
+                <li><a href="timetables.html">Timetables</a></li>
+                <li><a href="attendance.html">Attendance</a></li>
+                <li><a href="substitutions.html">Substitutions</a></li>
+                <li><a href="notifications.html">Notifications</a></li>
+            </ul>
+            <div class="user-info">
+                <span class="user-role" id="userRole"></span>
+                <span id="userName"></span>
+                <button class="btn-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h2>Dashboard</h2>
+                <p>Overview of today's activities and statistics</p>
+            </div>
+
+            <!-- Date Selector -->
+            <div class="card mb-20">
+                <div class="form-group">
+                    <label for="dateSelector">Select Date</label>
+                    <input type="date" id="dateSelector" class="form-group input" onchange="loadDashboard()">
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Total Teachers</span>
+                        <span class="stat-card-icon">👥</span>
+                    </div>
+                    <div class="stat-card-value" id="totalTeachers">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Present Today</span>
+                        <span class="stat-card-icon">✅</span>
+                    </div>
+                    <div class="stat-card-value" id="presentCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Absent Today</span>
+                        <span class="stat-card-icon">❌</span>
+                    </div>
+                    <div class="stat-card-value" id="absentCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Substitutions</span>
+                        <span class="stat-card-icon">🔄</span>
+                    </div>
+                    <div class="stat-card-value" id="substitutionsCount">0</div>
+                </div>
+            </div>
+
+            <!-- Today's Absent Teachers -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Today's Absent Teachers</h3>
+                    <span class="badge badge-danger" id="absentBadge">0</span>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Subject</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody id="absentTeachersTable">
+                            <tr>
+                                <td colspan="4" class="text-center">No absent teachers</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Today's Substitutions -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Today's Substitutions</h3>
+                    <button class="btn btn-primary" onclick="assignSubstitutions()" id="assignBtn">Assign Substitutions</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Period</th>
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Absent Teacher</th>
+                                <th>Substitute Teacher</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="substitutionsTable">
+                            <tr>
+                                <td colspan="6" class="text-center">No substitutions assigned</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Teacher Workload Summary -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Teacher Workload Summary</h3>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Teacher Name</th>
+                                <th>Subject</th>
+                                <th>Max Limit</th>
+                                <th>Today's Substitutions</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="workloadTable">
+                            <tr>
+                                <td colspan="5" class="text-center loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

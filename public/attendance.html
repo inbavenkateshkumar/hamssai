@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - Holy Angels Substitution</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <span>📚</span>
+                <span>Holy Angels Substitution</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="teachers.html">Teachers</a></li>
+                <li><a href="timetables.html">Timetables</a></li>
+                <li><a href="attendance.html" class="active">Attendance</a></li>
+                <li><a href="substitutions.html">Substitutions</a></li>
+                <li><a href="notifications.html">Notifications</a></li>
+            </ul>
+            <div class="user-info">
+                <span class="user-role" id="userRole"></span>
+                <span id="userName"></span>
+                <button class="btn-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h2>Attendance Management</h2>
+                <p>Mark teacher attendance for the day</p>
+            </div>
+
+            <!-- Date Selector -->
+            <div class="card mb-20">
+                <div class="form-group">
+                    <label for="attendanceDate">Select Date</label>
+                    <input type="date" id="attendanceDate" onchange="loadAttendance()" required>
+                    <div id="dayToFollowContainer" style="margin-top: 12px; display: none;">
+                        <label for="dayToFollow">Day to Follow</label>
+                        <select id="dayToFollow" onchange="handleDayToFollowChange()">
+                            <option value="">Select</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="submitAttendance()">Submit Attendance</button>
+                        <button class="btn btn-success" onclick="assignSubstitutionsForDate()">Assign Substitutions</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Grid -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Teacher Attendance</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">
+                        Click "Present" or "Absent" for each teacher. Teachers not marked are treated as Absent.
+                    </p>
+                </div>
+                <div class="attendance-grid" id="attendanceGrid">
+                    <div class="loading text-center">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/attendance.js"></script>
+</body>
+</html>

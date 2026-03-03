@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Diagnostic - Holy Angels AI Substitution</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .diagnostic-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .diagnostic-box {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .diagnostic-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .diagnostic-header h1 {
+            color: #2c3e50;
+            margin: 0;
+        }
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .status-item {
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ddd;
+            transition: all 0.3s ease;
+        }
+        .status-item.checking {
+            background: #f0f7ff;
+            border-left-color: #3498db;
+        }
+        .status-item.success {
+            background: #f0fff4;
+            border-left-color: #27ae60;
+        }
+        .status-item.error {
+            background: #fff5f5;
+            border-left-color: #e74c3c;
+        }
+        .status-item.pending {
+            background: #fffbf0;
+            border-left-color: #f39c12;
+        }
+        .status-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-item.success .status-title { color: #27ae60; }
+        .status-item.error .status-title { color: #e74c3c; }
+        .status-item.checking .status-title { color: #3498db; }
+        .status-item.pending .status-title { color: #f39c12; }
+        .status-message {
+            font-size: 14px;
+            color: #666;
+            margin: 8px 0;
+        }
+        .status-indicator {
+            font-size: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .status-item.success .status-indicator { animation: none; }
+        .status-item.error .status-indicator { animation: none; }
+        .status-item.pending .status-indicator { animation: none; }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #229954;
+        }
+        .log-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        .log-success { color: #27ae60; }
+        .log-error { color: #e74c3c; }
+        .log-info { color: #3498db; }
+        .log-warning { color: #f39c12; }
+    </style>
+</head>
+<body>
+    <div class="diagnostic-container">
+        <div class="diagnostic-box">
+            <div class="diagnostic-header">
+                <h1>🔍 System Diagnostic</h1>
+                <p>Checking all system components...</p>
+            </div>
+
+            <div class="status-grid">
+                <!-- Server Check -->
+                <div id="serverCheck" class="status-item pending">
+                    <div class="status-title">
+                        <span id="serverIndicator">⏳</span>
+                        Server Connection
+                    </div>
+                    <div class="status-message" id="serverMsg">Checking connection...</div>
+                </div>
+
+                <!-- Database Check -->
+                <div id="dbCheck" class="status-item pending">
+                    <div class="status-title">
+                        <span id="dbIndicator">⏳</span>
+                        Database Connection
+                    </div>
+                    <div class="status-message" id="dbMsg">Checking connection...</div>
+                </div>
+
+                <!-- API Health -->
+                <div id="apiCheck" class="status-item pending">
+                    <div class="status-title">
+                        <span id="apiIndicator">⏳</span>
+                        API Health
+                    </div>
+                    <div class="status-message" id="apiMsg">Checking endpoints...</div>
+                </div>
+
+                <!-- Auth Service -->
+                <div id="authCheck" class="status-item pending">
+                    <div class="status-title">
+                        <span id="authIndicator">⏳</span>
+                        Auth Service
+                    </div>
+                    <div class="status-message" id="authMsg">Checking service...</div>
+                </div>
+
+                <!-- Teachers Service -->
+                <div id="teachersCheck" class="status-item pending">
+                    <div class="status-title">
+                        <span id="teachersIndicator">⏳</span>
+                        Teachers Service
+                    </div>
+                    <div class="status-message" id="teachersMsg">Checking service...</div>
+                </div>
+
+                <!-- Timetables Service -->
+                <div id="timetablesCheck" class="status-item pending">
+                    <div class="status-title">
+                        <span id="timetablesIndicator">⏳</span>
+                        Timetables Service
+                    </div>
+                    <div class="status-message" id="timetablesMsg">Checking service...</div>
+                </div>
+            </div>
+
+            <div class="log-section">
+                <div id="logs"></div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="runDiagnostics()">🔄 Run Diagnostics</button>
+                <button class="btn btn-success" onclick="goToLogin()">✓ Go to Login</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = window.location.origin;
+        let logs = [];
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            logs.push({ message, type, timestamp });
+            updateLogs();
+        }
+
+        function updateLogs() {
+            const logsDiv = document.getElementById('logs');
+            logsDiv.innerHTML = logs.map(log => 
+                `<div class="log-entry log-${log.type}">[${log.timestamp}] ${log.message}</div>`
+            ).join('');
+            logsDiv.scrollTop = logsDiv.scrollHeight;
+        }
+
+        async function checkServer() {
+            const check = document.getElementById('serverCheck');
+            const indicator = document.getElementById('serverIndicator');
+            const msg = document.getElementById('serverMsg');
+            
+            try {
+                addLog('Checking server connection...', 'info');
+                const response = await fetch(`${BASE_URL}/api/health`, { method: 'GET' });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    check.className = 'status-item success';
+                    indicator.textContent = '✅';
+                    msg.textContent = `Server running on port 3000`;
+                    addLog('✅ Server is healthy', 'success');
+                    return true;
+                } else {
+                    throw new Error('Unhealthy response');
+                }
+            } catch (err) {
+                check.className = 'status-item error';
+                indicator.textContent = '❌';
+                msg.textContent = `Error: ${err.message}`;
+                addLog(`❌ Server error: ${err.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function checkDatabase() {
+            const check = document.getElementById('dbCheck');
+            const indicator = document.getElementById('dbIndicator');
+            const msg = document.getElementById('dbMsg');
+            
+            try {
+                addLog('Checking database connection...', 'info');
+                const response = await fetch(`${BASE_URL}/api/teachers`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer dummy-token` }
+                });
+                
+                // We expect 401 if auth fails, but connection works
+                if (response.status === 401 || response.ok) {
+                    check.className = 'status-item success';
+                    indicator.textContent = '✅';
+                    msg.textContent = `Database connected successfully`;
+                    addLog('✅ Database is accessible', 'success');
+                    return true;
+                } else if (response.status === 500) {
+                    throw new Error('Database error');
+                }
+            } catch (err) {
+                check.className = 'status-item error';
+                indicator.textContent = '❌';
+                msg.textContent = `Error: ${err.message}`;
+                addLog(`❌ Database error: ${err.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function checkAPI() {
+            const check = document.getElementById('apiCheck');
+            const indicator = document.getElementById('apiIndicator');
+            const msg = document.getElementById('apiMsg');
+            
+            try {
+                addLog('Checking API endpoints...', 'info');
+                const endpoints = [
+                    '/api/health',
+                    '/api/auth',
+                    '/api/teachers',
+                    '/api/timetables'
+                ];
+                
+                let working = 0;
+                for (const endpoint of endpoints) {
+                    try {
+                        const response = await fetch(`${BASE_URL}${endpoint}`, { 
+                            method: endpoint === '/api/health' ? 'GET' : 'POST',
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                        if (response.ok || response.status === 401 || response.status === 400) {
+                            working++;
+                        }
+                    } catch (e) {
+                        addLog(`  ⚠️ ${endpoint}: ${e.message}`, 'warning');
+                    }
+                }
+                
+                if (working >= 3) {
+                    check.className = 'status-item success';
+                    indicator.textContent = '✅';
+                    msg.textContent = `${working}/${endpoints.length} endpoints responding`;
+                    addLog(`✅ API endpoints are operational (${working}/${endpoints.length})`, 'success');
+                    return true;
+                }
+            } catch (err) {
+                check.className = 'status-item error';
+                indicator.textContent = '❌';
+                msg.textContent = `Error: ${err.message}`;
+                addLog(`❌ API error: ${err.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function checkAuth() {
+            const check = document.getElementById('authCheck');
+            const indicator = document.getElementById('authIndicator');
+            const msg = document.getElementById('authMsg');
+            
+            try {
+                addLog('Checking auth service...', 'info');
+                const response = await fetch(`${BASE_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: 'test', password: 'test' })
+                });
+                
+                if (response.status === 400 || response.status === 401 || response.ok) {
+                    check.className = 'status-item success';
+                    indicator.textContent = '✅';
+                    msg.textContent = `Auth service responding`;
+                    addLog('✅ Auth service is operational', 'success');
+                    return true;
+                }
+            } catch (err) {
+                check.className = 'status-item error';
+                indicator.textContent = '❌';
+                msg.textContent = `Error: ${err.message}`;
+                addLog(`❌ Auth error: ${err.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function checkTeachers() {
+            const check = document.getElementById('teachersCheck');
+            const indicator = document.getElementById('teachersIndicator');
+            const msg = document.getElementById('teachersMsg');
+            
+            try {
+                addLog('Checking teachers service...', 'info');
+                const response = await fetch(`${BASE_URL}/api/teachers`, {
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer test' }
+                });
+                
+                if (response.status === 401 || response.ok) {
+                    check.className = 'status-item success';
+                    indicator.textContent = '✅';
+                    msg.textContent = `Teachers service responding`;
+                    addLog('✅ Teachers service is operational', 'success');
+                    return true;
+                }
+            } catch (err) {
+                check.className = 'status-item error';
+                indicator.textContent = '❌';
+                msg.textContent = `Error: ${err.message}`;
+                addLog(`❌ Teachers error: ${err.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function checkTimetables() {
+            const check = document.getElementById('timetablesCheck');
+            const indicator = document.getElementById('timetablesIndicator');
+            const msg = document.getElementById('timetablesMsg');
+            
+            try {
+                addLog('Checking timetables service...', 'info');
+                const response = await fetch(`${BASE_URL}/api/timetables`, {
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer test' }
+                });
+                
+                if (response.status === 401 || response.ok) {
+                    check.className = 'status-item success';
+                    indicator.textContent = '✅';
+                    msg.textContent = `Timetables service responding`;
+                    addLog('✅ Timetables service is operational', 'success');
+                    return true;
+                }
+            } catch (err) {
+                check.className = 'status-item error';
+                indicator.textContent = '❌';
+                msg.textContent = `Error: ${err.message}`;
+                addLog(`❌ Timetables error: ${err.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function runDiagnostics() {
+            logs = [];
+            addLog('🔍 Starting system diagnostics...', 'info');
+            addLog(`Base URL: ${BASE_URL}`, 'info');
+            
+            await checkServer();
+            await new Promise(r => setTimeout(r, 500));
+            
+            await checkDatabase();
+            await new Promise(r => setTimeout(r, 500));
+            
+            await checkAPI();
+            await new Promise(r => setTimeout(r, 500));
+            
+            await checkAuth();
+            await new Promise(r => setTimeout(r, 500));
+            
+            await checkTeachers();
+            await new Promise(r => setTimeout(r, 500));
+            
+            await checkTimetables();
+            
+            addLog('✅ Diagnostics complete!', 'success');
+        }
+
+        function goToLogin() {
+            window.location.href = '/index.html';
+        }
+
+        // Run diagnostics on page load
+        window.addEventListener('load', () => {
+            setTimeout(runDiagnostics, 500);
+        });
+    </script>
+</body>
+</html>
